@@ -1,0 +1,693 @@
+/* ==========================================================================
+   PULAU-SCAN - PETA DAN PREDIKSI KEMISKINAN KEPULAUAN RIAU
+   Tema Tampilan: PREMIUM NEOBRUTALISM (COBALT & MIDNIGHT NAVY)
+   File: pulau-scan.css
+   Karakter: Otentik, estetik, berkarakter kuat, garis tepi tegas, dan
+             bayangan padat (tactile hard-shadows) dengan palet biru-putih matang.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. PALET WARNA NEOBRUTALISM ESTETIK (COBALT, NAVY & CRISP WHITE)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Latar Belakang */
+  --bg-app: #f4f6fb;            /* Canvas sejuk & bersih, sangat nyaman di mata */
+  --bg-card: #ffffff;           /* Putih murni untuk kartu */
+  --bg-subtle: #e8f0fe;         /* Soft Cobalt Tint */
+  --bg-highlight: #dbeafe;      /* Periwinkle Blue */
+  --bg-pill: #eff6ff;
+
+  /* Garis Tepi & Bayangan Otentik Neobrutalism */
+  --border-ink: #0b192c;        /* Midnight Ink Navy (Solid, Tajam & Berwibawa) */
+  --border-width: 2.5px;
+  --border-thick: 3.5px;
+  --shadow-offset: 4px 4px 0 var(--border-ink);
+  --shadow-card: 6px 6px 0 var(--border-ink);
+  --shadow-sm: 3px 3px 0 var(--border-ink);
+
+  /* Warna Teks */
+  --text-main: #0b192c;         /* Midnight Navy Pekat */
+  --text-secondary: #1e3a5f;    /* Deep Slate */
+  --text-muted: #577093;        /* Slate Blue */
+  --text-on-accent: #ffffff;
+
+  /* Aksen Biru Neobrutalism Pilihan */
+  --blue-cobalt: #1d4ed8;       /* French Cobalt Blue (Elegan, Bukan Neon AI) */
+  --blue-hover: #173db0;
+  --blue-active: #0f2b82;
+  --blue-sky: #0ea5e9;
+
+  /* Palet 4 Klaster K-Means (Gradasi Biru Matang) */
+  --cluster-1: #0b192c; /* Level 1: Deepest Midnight */
+  --cluster-2: #1d4ed8; /* Level 2: Royal Cobalt */
+  --cluster-3: #0284c7; /* Level 3: Ocean Azure */
+  --cluster-4: #60a5fa; /* Level 4: Soft Sky */
+
+  /* Sudut Neobrutalism Modern */
+  --radius-box: 8px;
+  --radius-pill: 999px;
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET & PENGATURAN DASAR
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 15.5px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   3. HEADER APLIKASI (NEOBRUTALIST CLEAN TITLE)
+   -------------------------------------------------------------------------- */
+.app-header {
+  background-color: transparent;
+  padding: 30px 20px 14px;
+}
+
+.header-container {
+  max-width: 1680px;
+  width: 96%;
+  margin: 0 auto;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.app-title {
+  display: inline-block;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  color: #ffffff;
+  background-color: var(--blue-cobalt);
+  border: var(--border-thick) solid var(--border-ink);
+  padding: 6px 20px;
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-box);
+  transform: rotate(-0.5deg);
+}
+
+.app-badge {
+  background-color: #ffffff;
+  color: var(--border-ink);
+  border: var(--border-width) solid var(--border-ink);
+  font-size: 13px;
+  font-weight: 800;
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.app-subtitle {
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 600;
+  max-width: 920px;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   4. NAVIGASI TAB (NEOBRUTALIST TACTILE BUTTONS)
+   -------------------------------------------------------------------------- */
+.app-nav {
+  display: flex;
+  gap: 12px;
+  max-width: 1680px;
+  width: 96%;
+  margin: 16px auto 26px;
+  padding: 0 4px;
+  overflow-x: auto;
+}
+
+.nav-btn {
+  background-color: #ffffff;
+  color: var(--border-ink);
+  border: var(--border-width) solid var(--border-ink);
+  padding: 11px 24px;
+  border-radius: var(--radius-box);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: var(--shadow-offset);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+}
+
+.nav-btn:hover {
+  background-color: var(--bg-subtle);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--border-ink);
+}
+
+.nav-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--border-ink);
+}
+
+.nav-btn.on {
+  background-color: var(--border-ink);
+  color: #ffffff;
+  box-shadow: var(--shadow-offset);
+}
+
+.nav-btn.on:hover {
+  background-color: #17273d;
+}
+
+/* --------------------------------------------------------------------------
+   5. LAYOUT UTAMA (FULL WIDE GRID)
+   -------------------------------------------------------------------------- */
+.app-main {
+  max-width: 1680px;
+  width: 96%;
+  margin: 0 auto;
+  padding: 0 4px 60px;
+}
+
+.tab-section {
+  display: none;
+}
+
+.tab-section.on {
+  display: block;
+}
+
+.grid-two-columns {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 26px;
+}
+
+.grid-equal-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+
+@media (max-width: 1024px) {
+  .grid-two-columns,
+  .grid-equal-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. KARTU NEOBRUTALISM (CLEAN CRISP CARDS)
+   -------------------------------------------------------------------------- */
+.card {
+  background-color: var(--bg-card);
+  border: var(--border-thick) solid var(--border-ink);
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+  position: relative;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 7px 7px 0 var(--border-ink);
+}
+
+.card-title {
+  margin: 0 0 18px;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--border-ink);
+  display: inline-block;
+  background-color: var(--bg-subtle);
+  border: 2px solid var(--border-ink);
+  padding: 5px 14px;
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow-sm);
+}
+
+.mt-20 {
+  margin-top: 26px;
+}
+
+/* --------------------------------------------------------------------------
+   7. KONTROL INTERAKTIF & BUTTON GROUPS
+   -------------------------------------------------------------------------- */
+.control-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.button-group {
+  display: inline-flex;
+  gap: 4px;
+  background-color: var(--bg-subtle);
+  padding: 5px;
+  border: 2px solid var(--border-ink);
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-seg {
+  border: 2px solid transparent;
+  background: transparent;
+  color: var(--border-ink);
+  padding: 7px 15px;
+  border-radius: var(--radius-box);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  transition: all 0.1s ease;
+}
+
+.btn-seg:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-seg.on {
+  background-color: #ffffff;
+  color: var(--blue-cobalt);
+  border-color: var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
+}
+
+.btn-primary {
+  background-color: var(--blue-cobalt);
+  color: #ffffff;
+  border: var(--border-width) solid var(--border-ink);
+  padding: 10px 22px;
+  border-radius: var(--radius-box);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 14.5px;
+  cursor: pointer;
+  box-shadow: var(--shadow-offset);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--blue-hover);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--border-ink);
+}
+
+.btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--border-ink);
+}
+
+.year-indicator {
+  display: inline-block;
+  font-weight: 800;
+  color: var(--border-ink);
+  background-color: #ffffff;
+  border: 2px solid var(--border-ink);
+  box-shadow: var(--shadow-sm);
+  padding: 6px 14px;
+  border-radius: var(--radius-box);
+  min-width: 110px;
+  text-align: center;
+  font-size: 14.5px;
+}
+
+input[type="range"] {
+  flex: 1;
+  min-width: 150px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-subtle);
+  border: 2px solid var(--border-ink);
+  outline: none;
+  cursor: pointer;
+  accent-color: var(--blue-cobalt);
+}
+
+/* --------------------------------------------------------------------------
+   8. PETA GOOGLE MAPS
+   -------------------------------------------------------------------------- */
+.map-container {
+  position: relative;
+  background-color: #ffffff;
+  border: var(--border-thick) solid var(--border-ink);
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  min-height: 540px;
+}
+
+#google-map {
+  width: 100%;
+  height: 540px;
+  display: block;
+  z-index: 1;
+}
+
+/* Label Marker Stiker di atas Google Maps */
+.map-marker-label {
+  background-color: #ffffff;
+  color: var(--border-ink);
+  border: 2px solid var(--border-ink);
+  padding: 3px 10px;
+  border-radius: var(--radius-box);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 2px 2px 0 var(--border-ink);
+  white-space: nowrap;
+  pointer-events: none;
+  text-align: center;
+}
+
+/* Kustomisasi Tooltip & Popup Leaflet Neobrutalism */
+.leaflet-popup-content-wrapper {
+  background-color: #ffffff !important;
+  color: var(--border-ink) !important;
+  border: 2.5px solid var(--border-ink) !important;
+  border-radius: var(--radius-box) !important;
+  box-shadow: var(--shadow-offset) !important;
+  font-family: "Space Grotesk", sans-serif !important;
+  padding: 2px 4px !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--border-ink) !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px 14px !important;
+  font-size: 13.5px !important;
+  line-height: 1.5 !important;
+  font-weight: 700 !important;
+}
+
+.leaflet-tooltip {
+  background-color: #ffffff !important;
+  color: var(--border-ink) !important;
+  border: 2px solid var(--border-ink) !important;
+  border-radius: var(--radius-box) !important;
+  font-family: "Space Grotesk", sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  box-shadow: 2px 2px 0 var(--border-ink) !important;
+  padding: 4px 10px !important;
+}
+
+/* Legenda Peta */
+.legend-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.legend-color-box {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-ink);
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: -2px;
+  box-shadow: 1px 1px 0 var(--border-ink);
+}
+
+.legend-gradient-bar {
+  width: 180px;
+  height: 14px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--border-ink);
+  background: linear-gradient(90deg, #dbeafe, #1d4ed8);
+  display: inline-block;
+  box-shadow: 2px 2px 0 var(--border-ink);
+}
+
+/* --------------------------------------------------------------------------
+   9. KOTAK STATISTIK & METRIK (STAT BOXES)
+   -------------------------------------------------------------------------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.stat-box {
+  background-color: var(--bg-subtle);
+  border: 2px solid var(--border-ink);
+  border-radius: var(--radius-box);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 800;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--border-ink);
+  display: block;
+}
+
+.predict-result-box {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background-color: var(--bg-subtle);
+  border: 2px solid var(--border-ink);
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow-offset);
+}
+
+.stat-value-large {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--blue-cobalt);
+  line-height: 1.1;
+  margin: 8px 0;
+  display: inline-block;
+}
+
+/* --------------------------------------------------------------------------
+   10. PERINGKAT & INSIGHT
+   -------------------------------------------------------------------------- */
+.rank-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.rank-name {
+  width: 150px;
+  flex: none;
+  color: var(--border-ink);
+}
+
+.rank-bar-bg {
+  flex: 1;
+  height: 16px;
+  background-color: var(--bg-subtle);
+  border: 2px solid var(--border-ink);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 2px 2px 0 var(--border-ink);
+}
+
+.rank-bar-fill {
+  height: 100%;
+  border-right: 2px solid var(--border-ink);
+  transition: width 0.35s ease;
+}
+
+.rank-value {
+  width: 54px;
+  text-align: right;
+  color: var(--border-ink);
+  font-weight: 800;
+}
+
+.insight-list {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.insight-list li {
+  margin: 12px 0;
+  color: var(--text-secondary);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.insight-list b {
+  color: var(--blue-cobalt);
+  font-weight: 800;
+}
+
+/* --------------------------------------------------------------------------
+   11. TABEL DATA NEOBRUTALISM
+   -------------------------------------------------------------------------- */
+.table-responsive {
+  overflow-x: auto;
+  border: var(--border-thick) solid var(--border-ink);
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow-card);
+  margin-top: 16px;
+  background-color: #ffffff;
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: right;
+}
+
+table.data-table th {
+  background-color: var(--bg-subtle);
+  color: var(--border-ink);
+  font-weight: 800;
+  padding: 11px 16px;
+  border: 1.5px solid var(--border-ink);
+  white-space: nowrap;
+}
+
+table.data-table td {
+  padding: 10px 16px;
+  border: 1.5px solid var(--border-ink);
+  background-color: #ffffff;
+  color: var(--text-secondary);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+table.data-table tr:hover td {
+  background-color: var(--bg-subtle);
+}
+
+table.data-table th:first-child,
+table.data-table td:first-child,
+table.data-table th:nth-child(2),
+table.data-table td:nth-child(2) {
+  text-align: left;
+}
+
+/* --------------------------------------------------------------------------
+   12. FORM INPUT & SELEKSI
+   -------------------------------------------------------------------------- */
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--border-ink);
+  margin: 16px 0 6px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: var(--border-width) solid var(--border-ink);
+  border-radius: var(--radius-box);
+  background-color: #ffffff;
+  color: var(--border-ink);
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  outline: none;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.1s ease;
+}
+
+.form-control:focus {
+  border-color: var(--blue-cobalt);
+  box-shadow: 4px 4px 0 var(--blue-cobalt);
+}
+
+/* --------------------------------------------------------------------------
+   13. BADGE, TEKS BANTUAN & CANVAS
+   -------------------------------------------------------------------------- */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 4px;
+  background-color: var(--bg-subtle);
+  color: var(--border-ink);
+  border: 1.5px solid var(--border-ink);
+}
+
+.badge-active {
+  background-color: var(--blue-cobalt);
+  color: #ffffff;
+}
+
+.helper-text {
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+canvas.chart-canvas {
+  width: 100%;
+  display: block;
+  margin-top: 16px;
+  border: var(--border-width) solid var(--border-ink);
+  border-radius: var(--radius-box);
+  background-color: #ffffff;
+  padding: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   14. FOOTER
+   -------------------------------------------------------------------------- */
+.app-footer {
+  max-width: 1680px;
+  width: 96%;
+  margin: 0 auto;
+  padding: 26px 4px 40px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-align: center;
+  border-top: var(--border-width) solid var(--border-ink);
+}

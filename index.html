@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PULAU-SCAN: Pemetaan & Prediksi Kemiskinan Kepulauan Riau</title>
+
+  <!-- Google Font: Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet.js CSS (Peta Google Maps Asli) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- Stylesheet Eksternal (Neobrutalism Biru & Putih) -->
+  <link rel="stylesheet" href="pulau-scan.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       HEADER UTAMA (TANPA GARIS PEMISAH & LEBAR PENUH)
+       ========================================================================= -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <h1 class="app-title">PULAU-SCAN</h1>
+        <span class="app-badge">Data Sains</span>
+      </div>
+      <p class="app-subtitle">
+        Pemetaan analitik dan prediksi kemiskinan kabupaten/kota Provinsi Kepulauan Riau (2020–2030)
+        menggunakan visualisasi spasial Google Maps, pengelompokan K-Means, dan model regresi linier.
+      </p>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       NAVIGASI TAB UTAMA
+       ========================================================================= -->
+  <nav class="app-nav" id="main-nav">
+    <button class="nav-btn on" data-tab="peta">Peta Google Maps</button>
+    <button class="nav-btn" data-tab="klaster">Klaster K-Means</button>
+    <button class="nav-btn" data-tab="banding">Bandingkan Wilayah</button>
+    <button class="nav-btn" data-tab="prediksi">Model Prediksi</button>
+    <button class="nav-btn" data-tab="data">Dataset BPS</button>
+  </nav>
+
+  <!-- =========================================================================
+       KONTEN UTAMA APLIKASI
+       ========================================================================= -->
+  <main class="app-main">
+
+    <!-- TAB 1: PETA GOOGLE MAPS INTERAKTIF -->
+    <section id="peta-section" class="tab-section on">
+      <div class="grid-two-columns">
+
+        <!-- Kolom Kiri: Peta Google Maps Asli -->
+        <div class="card">
+          <!-- Kontrol Mode Tampilan Peta & Pilihan Layer Google -->
+          <div class="control-row">
+            <div class="button-group" id="mode-button-group">
+              <button class="btn-seg on" data-m="k">Klaster K-Means</button>
+              <button class="btn-seg" data-m="y">% Penduduk Miskin</button>
+            </div>
+            <div class="button-group cluster-button-group"></div>
+            <div class="button-group" id="map-type-group" style="margin-left: auto;">
+              <button class="btn-seg on" data-layer="road">Jalan (Roadmap)</button>
+              <button class="btn-seg" data-layer="sat">Satelit</button>
+              <button class="btn-seg" data-layer="ter">Medan (Terrain)</button>
+            </div>
+          </div>
+
+          <!-- Kontrol Garis Waktu (Timeline Slider) -->
+          <div class="control-row">
+            <button class="btn-primary" id="btn-play-timeline">▶ Putar Animasi</button>
+            <input type="range" id="year-slider" min="2020" max="2030" value="2025">
+            <span class="year-indicator" id="year-label">2025</span>
+          </div>
+
+          <!-- Wadah Peta Google Maps Nyata -->
+          <div class="map-container" id="google-map-wrapper">
+            <div id="google-map"></div>
+          </div>
+
+          <!-- Legenda Warna Peta -->
+          <div class="legend-container" id="map-legend"></div>
+          <p class="helper-text">
+            💡 Peta menggunakan Google Maps asli. Geser dan zoom untuk menjelajah pulau-pulau di Kepri. Klik wilayah atau marker untuk melihat rincian indikator. Tahun 2026–2030 adalah proyeksi model regresi.
+          </p>
+        </div>
+
+        <!-- Kolom Kanan: Rincian Wilayah Terpilih -->
+        <div class="card">
+          <h2 class="card-title" id="detail-region-name">Detail Wilayah</h2>
+          <div id="detail-stats-container">
+            <p class="helper-text">Pilih atau klik salah satu pulau/wilayah pada peta Google Maps di samping.</p>
+          </div>
+          <canvas class="chart-canvas" id="detail-chart-canvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Grid Bawah: Peringkat & Ringkasan Temuan -->
+      <div class="grid-equal-columns mt-20">
+        <div class="card">
+          <h2 class="card-title">Peringkat Persentase Kemiskinan</h2>
+          <div id="ranking-container"></div>
+        </div>
+        <div class="card">
+          <h2 class="card-title">Temuan Utama & Analisis</h2>
+          <ul class="insight-list" id="insights-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: KLASTER K-MEANS -->
+    <section id="klaster-section" class="tab-section">
+      <div class="grid-equal-columns">
+        <div class="card">
+          <h2 class="card-title">Pemilihan Jumlah Klaster (k)</h2>
+          <p class="helper-text" style="margin-bottom: 12px;">
+            Rekomendasi Terbaik: <strong id="cluster-recommendation" style="color: var(--blue-primary);">-</strong>.
+          </p>
+          <div class="control-row">
+            <div class="button-group cluster-button-group"></div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="cluster-eval-table"></table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Grafik Elbow Method (Inertia)</h2>
+          <canvas class="chart-canvas" id="elbow-chart-canvas"></canvas>
+          <p class="helper-text">
+            Semakin rendah inersia, klaster semakin rapat. Titik siku (elbow) menunjukkan jumlah klaster yang paling efisien.
+          </p>
+        </div>
+      </div>
+
+      <div class="card mt-20">
+        <h2 class="card-title">Profil Karakteristik Klaster</h2>
+        <div class="table-responsive">
+          <table class="data-table" id="cluster-profile-table"></table>
+        </div>
+        <p class="helper-text">
+          Pengelompokan dihitung berdasarkan kombinasi rata-rata % kemiskinan dan rata-rata lama sekolah (RLS) per wilayah.
+        </p>
+      </div>
+    </section>
+
+    <!-- TAB 3: BANDINGKAN WILAYAH -->
+    <section id="banding-section" class="tab-section">
+      <div class="card">
+        <h2 class="card-title">Bandingkan Dua Wilayah</h2>
+        <div class="grid-equal-columns">
+          <div>
+            <label class="form-label" for="compare-region-a">Pilih Wilayah A</label>
+            <select class="form-control" id="compare-region-a"></select>
+          </div>
+          <div>
+            <label class="form-label" for="compare-region-b">Pilih Wilayah B</label>
+            <select class="form-control" id="compare-region-b"></select>
+          </div>
+        </div>
+
+        <canvas class="chart-canvas" id="compare-chart-canvas"></canvas>
+
+        <div class="table-responsive">
+          <table class="data-table" id="compare-table"></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: MODEL PREDIKSI & WHAT-IF SCENARIO -->
+    <section id="prediksi-section" class="tab-section">
+      <div class="grid-equal-columns">
+
+        <!-- Form Simulasi Prediksi -->
+        <div class="card">
+          <h2 class="card-title">Simulasi Prediksi Kemiskinan</h2>
+
+          <label class="form-label" for="predict-region">Kabupaten / Kota</label>
+          <select class="form-control" id="predict-region"></select>
+
+          <label class="form-label" for="predict-year">Tahun Proyeksi (2020–2035)</label>
+          <input class="form-control" type="number" id="predict-year" min="2020" max="2035" value="2026">
+
+          <label class="form-label" for="predict-rls">Rata-rata Lama Sekolah (Tahun)</label>
+          <input class="form-control" type="number" id="predict-rls" step="0.01">
+          <p class="helper-text">
+            Nilai RLS otomatis terisi sesuai tren pertumbuhan historis. Ubah angka untuk mencoba simulasi skenario kebijakan ("what-if").
+          </p>
+
+          <div class="predict-result-box">
+            <span class="stat-label">Hasil Prediksi Persentase Kemiskinan:</span>
+            <div class="stat-value-large" id="predict-output-value">-</div>
+            <div class="helper-text" id="predict-output-desc"></div>
+          </div>
+        </div>
+
+        <!-- Grafik Proyeksi -->
+        <div class="card">
+          <h2 class="card-title" id="predict-chart-title">Proyeksi Wilayah</h2>
+          <canvas class="chart-canvas" id="predict-chart-canvas"></canvas>
+          <p class="helper-text">
+            Garis putus-putus menunjukkan proyeksi tren linear, dan titik oranye mewakili hasil simulasi parametermu.
+          </p>
+        </div>
+      </div>
+
+      <!-- Grid Bawah: Proyeksi Semua Wilayah & Evaluasi Model -->
+      <div class="grid-equal-columns mt-20">
+        <div class="card">
+          <h2 class="card-title">Tabel Proyeksi Seluruh Wilayah (%)</h2>
+          <div class="table-responsive">
+            <table class="data-table" id="projection-table"></table>
+          </div>
+          <div style="margin-top: 14px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <button class="btn-primary" id="btn-copy-csv">Salin ke CSV</button>
+            <span class="helper-text" id="copy-csv-message"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Evaluasi Performa Model (Tahun Uji 2025)</h2>
+          <div id="eval-metrics-container"></div>
+          <div class="table-responsive">
+            <table class="data-table" id="eval-test-table"></table>
+          </div>
+          <p class="helper-text">
+            Model dilatih pada data 2020–2024 dan dievaluasi pada data aktual 2025. Prediksi jangka panjang memiliki derajat ketidakpastian yang meningkat.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: DATASET BERSIH -->
+    <section id="data-section" class="tab-section">
+      <div class="card">
+        <h2 class="card-title">Dataset Bersih BPS Provinsi Kepulauan Riau</h2>
+        <div style="max-width: 320px; margin-bottom: 14px;">
+          <label class="form-label" for="data-filter-region">Filter Berdasarkan Wilayah</label>
+          <select class="form-control" id="data-filter-region"></select>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="data-clean-table"></table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       FOOTER APLIKASI
+       ========================================================================= -->
+  <footer class="app-footer">
+    <p>
+      Sumber Data: Badan Pusat Statistik (BPS) Provinsi Kepulauan Riau 2020–2025 (pulau_scan_clean.csv).
+      Peta interaktif: Menggunakan Google Maps asli & data spasial BAKOSURTANAL.
+    </p>
+  </footer>
+
+  <!-- Script Leaflet.js (Engine Peta Google Maps) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Script Logika Aplikasi Terpisah -->
+  <script src="pulau-scan.js"></script>
+</body>
+</html>
